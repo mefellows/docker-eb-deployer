@@ -2,7 +2,7 @@
 
 # Extract env vars from host into file
 ENV_TMP=".env.tmp"
-env > ${ENV_TMP}
+env | grep '^\S*=' > ${ENV_TMP}
 
 # libdevmapper=$(ldconfig -p | grep 'libdevmapper.so.1.02' | awk '{print $4}')
 # libudev=$(ldconfig -p | grep 'libudev.so.0' | awk '{print $4}')
@@ -22,7 +22,7 @@ done
 docker run -i -t \
   --volume $(pwd):/var/app \
   --env-file ${ENV_TMP} \
-  dockerregistry.seekinfra.com/library/docker-eb-deployer \
+  mefellows/docker-eb-deployer \
   bash -l -c "${COMMAND}"
 
 rm ${ENV_TMP}
